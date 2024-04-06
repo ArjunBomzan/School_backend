@@ -72,7 +72,7 @@ const login = async (req, res, next) => {
         if (user) {
 
             let matched = await bcrypt.compare(req.body.password, user.password);
-            console.log(matched)
+            
 
             user = user.toObject()
             delete user.password
@@ -87,6 +87,8 @@ const login = async (req, res, next) => {
                     mes: "user loged in"
                 })
                 return;
+            }else{
+                res.status(401).send("invalid credentials")
             }
 
             return
