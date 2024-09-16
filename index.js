@@ -3,8 +3,10 @@ require("dotenv").config();
 const cors = require("cors");
 const PORT = process.env.PORT;
 const { handleServererro, resourceNotfound } = require("./middleware/error");
-const router = require("./routes/auth");
 const express = require("express");
+const router = require("./routes/auth");
+const semesterrouter = require("./routes/semester");
+const subject = require("./routes/subject");
 const app = express();
 
 app.get("/", (req, res) => {
@@ -13,6 +15,8 @@ app.get("/", (req, res) => {
 app.use(express.json());
 app.use(cors());
 app.use("/api/", router);
+app.use("/api/", semesterrouter);
+app.use("/api/", subject);
 
 app.use(resourceNotfound);
 app.use(handleServererro);

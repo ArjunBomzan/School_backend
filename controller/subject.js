@@ -1,0 +1,22 @@
+const Subject = require("../Schema/Subject");
+async function createSubject(req, res, next) {
+  console.log(res.body);
+  try {
+    data = await Subject(req.body).save();
+    res.status(200).send({ message: "SUbject created successfully" });
+  } catch (err) {
+    next(err);
+  }
+}
+async function getSubjectBySemester(req, res, next) {
+  const semesterId = req.params.id;
+  try {
+    data = await Subject.find({ semesterId: semesterId });
+
+    res.status(200).send(data);
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { createSubject, getSubjectBySemester };
