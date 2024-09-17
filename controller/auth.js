@@ -35,7 +35,7 @@ const signup = async (req, res, next) => {
 
             user = user.toObject()
             delete user.password
-            console.log("user signed up")
+          
             res.send(user)
         }
     } catch (err) {
