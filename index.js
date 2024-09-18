@@ -7,6 +7,7 @@ const express = require("express");
 const router = require("./routes/auth");
 const semesterrouter = require("./routes/semester");
 const subject = require("./routes/subject");
+const chapter = require("./routes/chapter");
 const app = express();
 
 app.get("/", (req, res) => {
@@ -17,6 +18,7 @@ app.use(cors());
 app.use("/api/", router);
 app.use("/api/", semesterrouter);
 app.use("/api/", subject);
+app.use("/api/", chapter);
 
 app.use(resourceNotfound);
 app.use(handleServererro);

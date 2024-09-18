@@ -1,4 +1,10 @@
+const uploadToCloud = require("../Cloudinary/uploadToCloud");
+const Chapter = require("../Schema/Chapter");
 async function createChapter(req, res, next) {
+  if (req.file) {
+    const url = await uploadToCloud(req.file.path);
+    req.body.pdf = url;
+  }
   try {
     data = await Chapter(req.body).save();
     res.status(200).send({ message: "Chapter created successfully" });

@@ -12,6 +12,6 @@ router = express.Router();
 router.post("/subject", createSubject);
 router.get("/subjects", getSubjects);
 router.get("/subjects/:id", getSubjectById);
-router.get("/subjectsBySemester/:id", getSubjectBySemester);
+router.get("/ /:id", getSubjectBySemester);
 
 module.exports = router;

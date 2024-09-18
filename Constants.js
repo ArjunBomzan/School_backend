@@ -1,5 +1,7 @@
-ADMIN="admin";
-TEACHER="teacher"
+ADMIN = "admin";
+TEACHER = "teacher";
 
-module.exports={
-    ADMIN,TEACHER}
+module.exports = {
+  ADMIN,
+  TEACHER,
+};

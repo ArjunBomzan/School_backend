@@ -1,10 +1,10 @@
 const express = require("express");
 const { createChapter, getChapterBySubject } = require("../controller/chapter");
+const upload = require("../middleware/multer");
 
 router = express.Router();
 
-// router.get("",get)
-router.post("/chapter", createChapter);
+router.post("/chapter", upload.single("image"), createChapter);
 router.get("/chapters/:id", getChapterBySubject);
 
 module.exports = router;
