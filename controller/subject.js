@@ -39,7 +39,7 @@ async function getSubjectBySemester(req, res, next) {
         },
       },
     ]);
-    console.log(data);
+
     res.status(200).send(data);
   } catch (err) {
     next(err);
