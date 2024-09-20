@@ -21,5 +21,14 @@ async function getChapterBySubject(req, res, next) {
     next(err);
   }
 }
+async function getChapter(req, res, next) {
+  const Id = req.params.id;
+  try {
+    data = await Chapter.findById(Id);
+    res.status(200).send(data);
+  } catch (err) {
+    next(err);
+  }
+}
 
-module.exports = { createChapter, getChapterBySubject };
+module.exports = { createChapter, getChapterBySubject, getChapter };
