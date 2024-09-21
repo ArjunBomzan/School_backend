@@ -18,6 +18,17 @@ async function getSubjectBySemester(req, res, next) {
       },
       {
         $lookup: {
+          from: "semesters",
+          localField: "semesterId",
+          foreignField: "_id",
+          as: "semester",
+        },
+      },
+      {
+        $unwind: "$semester",
+      },
+      {
+        $lookup: {
           from: "chapters",
           localField: "_id",
           foreignField: "subjectId",
@@ -35,6 +46,7 @@ async function getSubjectBySemester(req, res, next) {
           description: 1,
           code: 1,
           semesterId: 1,
+          semesterName: "$semester.semesterName",
           chapterCount: 1,
         },
       },
