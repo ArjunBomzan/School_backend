@@ -14,7 +14,7 @@ async function getSubjectBySemester(req, res, next) {
   try {
     data = await Subject.aggregate([
       {
-        $match: { semesterId: new mongoose.Types.ObjectId(semesterId) },
+        $match: { semesterName: new mongoose.Types.ObjectId(semesterId) },
       },
       {
         $lookup: {
