@@ -8,13 +8,20 @@ async function createSubject(req, res, next) {
     next(err);
   }
 }
+// function transformslug(str) {
+//   let arr = str.split("-");
+//   arr = arr.map((item) => item.charAt(0).toUpperCase() + item.slice(1));
+//   let str1 = arr.join(" ");
+//   return str1;
+// }
 async function getSubjectBySemester(req, res, next) {
-  const semesterId = req.params.id;
+  // const semesterName = transformslug(req.params.id);
+  const id = req.params.id;
 
   try {
     data = await Subject.aggregate([
       {
-        $match: { semesterName: new mongoose.Types.ObjectId(semesterId) },
+        $match: { semesterId: new mongoose.Types.ObjectId(id) },
       },
       {
         $lookup: {
