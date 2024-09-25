@@ -1,4 +1,5 @@
 // const uploadToCloud = require("../Cloudinary/uploadToCloud");
+const { default: mongoose } = require("mongoose");
 const Chapter = require("../Schema/Chapter");
 async function createChapter(req, res, next) {
   // console.log("file", req.body.pdf);
@@ -18,7 +19,32 @@ async function createChapter(req, res, next) {
 async function getChapterBySubject(req, res, next) {
   const subjectId = req.params.id;
   try {
-    data = await Chapter.find({ subjectId: subjectId });
+    data = await Chapter.aggregate([
+      {
+        $match: { subjectId: new mongoose.Types.ObjectId(subjectId) },
+      },
+      {
+        $lookup: {
+          from: "subjects",
+          localField: "subjectId",
+          foreignField: "_id",
+          as: "subject",
+        },
+      },
+      {
+        $unwind: "$subject",
+      },
+      {
+        $addFields: {
+          subjectName: "$subject.name",
+        },
+      },
+      {
+        $project: {
+          subject: 0,
+        },
+      },
+    ]);
     res.status(200).send(data);
   } catch (err) {
     next(err);
