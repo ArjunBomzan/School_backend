@@ -13,9 +13,10 @@ const chapterSchema = new Schema({
     required: true,
     unique: true,
   },
-  title: {
+  discription: {
     type: String,
   },
+
   details: {
     type: String,
   },

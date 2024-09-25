@@ -83,9 +83,19 @@ async function getSubjectById(req, res, next) {
     next(err);
   }
 }
+async function deleteSubject(req, res, next) {
+  const id = req.params.id;
+  try {
+    data = await Subject.findByIdAndDelete(id);
+    res.status(200).send({ message: "Subject deleted successfully" });
+  } catch (err) {
+    next(err);
+  }
+}
 module.exports = {
   createSubject,
   getSubjectBySemester,
   getSubjects,
   getSubjectById,
+  deleteSubject,
 };

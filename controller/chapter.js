@@ -30,5 +30,19 @@ async function getChapter(req, res, next) {
     next(err);
   }
 }
+async function deleteChapter(req, res, next) {
+  const id = req.params.id;
+  try {
+    data = await Chapter.findByIdAndDelete(id);
+    res.status(200).send({ message: "Chapter deleted successfully" });
+  } catch (err) {
+    next(err);
+  }
+}
 
-module.exports = { createChapter, getChapterBySubject, getChapter };
+module.exports = {
+  createChapter,
+  getChapterBySubject,
+  getChapter,
+  deleteChapter,
+};
