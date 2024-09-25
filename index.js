@@ -14,7 +14,7 @@ const app = express();
 app.get("/", (req, res) => {
   res.send("Your Server is alive");
 });
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 app.use(cors());
 app.use("/api/", router);
 app.use("/api/", semesterrouter);
