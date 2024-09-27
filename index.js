@@ -9,6 +9,7 @@ const semesterrouter = require("./routes/semester");
 const subject = require("./routes/subject");
 const chapter = require("./routes/chapter");
 const notice = require("./routes/notice");
+const planstudy = require("./routes/plan-study");
 const app = express();
 
 app.get("/", (req, res) => {
@@ -21,6 +22,7 @@ app.use("/api/", semesterrouter);
 app.use("/api/", subject);
 app.use("/api/", chapter);
 app.use("/api/", notice);
+app.use("/api/", planstudy);
 
 app.use(resourceNotfound);
 app.use(handleServererro);
