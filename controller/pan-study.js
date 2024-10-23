@@ -38,7 +38,7 @@ async function planStudy(req, res, next) {
         studyPlan.push({
           date: studyDay.format("YYYY-MM-DD"),
           subject: subject.name,
-          chapter: chapter.name, 
+          chapter: chapter.name,
           examDate: subject.examDate,
         });
       }

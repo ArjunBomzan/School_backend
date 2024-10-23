@@ -1,4 +1,4 @@
-const { required } = require("joi");
+// const { required, number } = require("joi");
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
@@ -24,6 +24,9 @@ const chapterSchema = new Schema({
   },
   pdf: {
     type: String,
+  },
+  deficulty: {
+    type: Number,
   },
 });
 
