@@ -1,9 +1,14 @@
 const mongoose = require("mongoose");
 const Subject = require("../Schema/Subject");
-const Chapter = require("../Schema/Chapter");
-const moment = require("moment");
 
-async function planStudy(req, res) {
+const moment = require("moment");
+const {
+  processSubjects,
+  generateStudyPlan,
+  organizePlan,
+} = require("./helper/processSubjects");
+
+async function planStudy(req, res, next) {
   try {
     const {
       startdate: startDate,
@@ -70,25 +75,6 @@ async function planStudy(req, res) {
       });
     }
 
-    // Validate exam dates for all subjects
-    for (const subject of subjects) {
-      if (!examDates[subject._id.toString()]) {
-        return res.status(400).json({
-          success: false,
-          message: `Exam date not provided for subject: ${subject.name}`,
-        });
-      }
-
-      const examDate = moment(examDates[subject._id.toString()]);
-      if (!examDate.isValid()) {
-        return res.status(400).json({
-          success: false,
-          message: `Invalid exam date for subject: ${subject.name}`,
-        });
-      }
-    }
-
-    // Add exam dates to subjects
     const subjectsWithExamDates = subjects.map((subject) => ({
       ...subject,
       examDate: examDates[subject._id.toString()],
@@ -105,10 +91,10 @@ async function planStudy(req, res) {
       startDate,
       preferences
     );
-
     // Generate study plan
     const studyPlan = generateStudyPlan(subjectDetails, startDate, preferences);
 
+    // console.log(studyPlan);
     // Organize final plan
     const organizedPlan = organizePlan(studyPlan);
 
@@ -116,16 +102,11 @@ async function planStudy(req, res) {
       success: true,
       message: "Study plan generated successfully",
       studyPlan: organizedPlan,
-      metadata: generateMetadata(organizedPlan, subjectDetails, preferences),
-      recommendations: generateRecommendations(preferences),
+      // metadata: generateMetadata(organizedPlan, subjectDetails, preferences),
+      // recommendations: generateRecommendations(preferences),
     });
   } catch (error) {
-    console.error("Study plan generation error:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Failed to generate study plan",
-      error: error.message,
-    });
+    next(error);
   }
 }
 
