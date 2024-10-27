@@ -30,7 +30,7 @@ async function planStudy(req, res, next) {
       dailyStudyHours: Math.min(req.body.dailyStudyHours || 6, 12),
       minTimePerSession: Math.max(req.body.minTimePerSession || 1, 0.5),
       maxTimePerSession: Math.min(req.body.maxTimePerSession || 3, 4),
-      preferredStudyDays: req.body.preferredStudyDays || [
+      preferredStudyDays: req.body.preferences.preferredStudyDays || [
         "monday",
         "tuesday",
         "wednesday",
@@ -39,7 +39,7 @@ async function planStudy(req, res, next) {
         "saturday",
         "sunday",
       ],
-      preferredTimeSlots: req.body.preferredTimeSlots || [
+      preferredTimeSlots: req.body.preferences.preferredTimeSlots || [
         "morning",
         "afternoon",
         "evening",
@@ -63,9 +63,9 @@ async function planStudy(req, res, next) {
       });
     }
 
-    // Fetch subjects without sorting by examDate
     const subjects = await Subject.aggregate([
       { $match: { semesterId: new mongoose.Types.ObjectId(semesterId) } },
+      { $project: { description: 0 } },
     ]);
 
     if (!subjects.length) {
@@ -75,15 +75,18 @@ async function planStudy(req, res, next) {
       });
     }
 
-    const subjectsWithExamDates = subjects.map((subject) => ({
-      ...subject,
-      examDate: examDates[subject._id.toString()],
-    }));
+    const subjectsWithExamDates = subjects
+      .filter((subject) => examDates[subject._id.toString()])
+      .map((subject) => ({
+        ...subject,
+        examDate: examDates[subject._id.toString()],
+      }));
 
     // Sort subjects by exam date
     subjectsWithExamDates.sort((a, b) =>
       moment(a.examDate).diff(moment(b.examDate))
     );
+    // console.log(subjectsWithExamDates);
 
     // Process subjects with exam dates
     const subjectDetails = await processSubjects(
@@ -91,6 +94,7 @@ async function planStudy(req, res, next) {
       startDate,
       preferences
     );
+
     // Generate study plan
     const studyPlan = generateStudyPlan(subjectDetails, startDate, preferences);
 

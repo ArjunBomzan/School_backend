@@ -9,7 +9,10 @@ async function processSubjects(subjects, startDate, preferences) {
 
     for (const subject of subjects) {
       // Fetch chapters for the subject
-      const chapters = await Chapter.find({ subjectId: subject._id });
+      const chapters = await Chapter.find(
+        { subjectId: subject._id },
+        { details: 0, pdf: 0 }
+      );
 
       // Calculate total chapters and estimate study time needed
       const totalChapters = chapters.length;
@@ -35,7 +38,6 @@ async function processSubjects(subjects, startDate, preferences) {
         return {
           _id: chapter._id,
           name: chapter.name,
-          description: chapter.description,
           studyTimeNeeded,
           difficulty: difficultyMultiplier,
           priority: priorityMultiplier,
@@ -60,7 +62,7 @@ async function processSubjects(subjects, startDate, preferences) {
       processedSubjects.push({
         _id: subject._id,
         name: subject.name,
-        description: subject.description,
+
         examDate: subject.examDate,
         chapters: processedChapters,
         metadata: {
