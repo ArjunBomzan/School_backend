@@ -4,6 +4,11 @@ const Semester = require("../Schema/Semester");
 
 async function search(req, res, next) {
   const searchTerm = req.query.search;
+  if (!searchTerm || searchTerm.length < 3) {
+    return res.status(400).json({
+      error: "Search term must be at least 3 characters long.",
+    });
+  }
   const cleanSearchTerm = searchTerm.replace(/['"]+/g, "");
 
   try {
