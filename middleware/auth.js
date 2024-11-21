@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { ADMIN, TEACHER } = require("../Constants");
-BUYER;
+const { ADMIN, TEACHER, STUDENT } = require("../Constants");
 
 const checkValidation = (req, res, next) => {
   let token = req.headers?.authorization.split(" ")[1];
@@ -35,8 +34,20 @@ const isteacher = (req, res, next) => {
     res.status(403).send("Forbiden");
   }
 };
+const isstudent = (req, res, next) => {
+  let role = req.user.role;
+  req._id = req.user._id;
+
+  if (STUDENT === role) {
+    next();
+  } else {
+    res.status(403).send("Forbiden");
+  }
+};
+
 module.exports = {
   checkValidation,
   isadmin,
   isteacher,
+  isstudent,
 };
